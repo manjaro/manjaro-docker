@@ -9,19 +9,11 @@ ENV LANG=en_US.UTF-8
 RUN pacman-key --init && \
     pacman-mirrors -f 5
 
-# TODO: remove when https://github.com/actions/virtual-environments/issues/2658 is fixed
 RUN [[ "${TARGETPLATFORM}" == "linux/amd64" ]] || exit 0 && \
-    curl -LO "https://repo.archlinuxcn.org/x86_64/glibc-linux4-2.33-4-x86_64.pkg.tar.zst" && \
-    bsdtar -C / -xvf "glibc-linux4-2.33-4-x86_64.pkg.tar.zst" && \
-    rm glibc*.zst && \
     pacman -Syy --noconfirm --needed archlinux-keyring manjaro-keyring && \
 	pacman-key --populate archlinux manjaro
 
-# TODO: remove when https://github.com/actions/virtual-environments/issues/2658 is fixed
 RUN [[ "${TARGETPLATFORM}" == "linux/arm64" ]] || exit 0 && \
-    curl -LO "https://github.com/Manjaro-Sway/glibc-linux4-arm/raw/main/glibc-2.33-4-aarch64.pkg.tar.zst" && \
-    bsdtar -C / -xvf "glibc-2.33-4-aarch64.pkg.tar.zst" && \
-    rm glibc*.zst && \
     pacman -Syy --noconfirm --needed archlinuxarm-keyring manjaro-arm-keyring && \
     pacman-key --populate archlinuxarm manjaro-arm
 
