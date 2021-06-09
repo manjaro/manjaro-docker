@@ -10,8 +10,6 @@ on:
     - cron:  '30 2 * * 0'
 
 env: 
-  ARCH_INSTALL_SCRIPTS_VERSION: 23
-  DOCKER_ORGANIZATION: manjarosway
   PLATFORMS: linux/arm64,linux/amd64
 
 jobs:
@@ -62,5 +60,7 @@ jobs:
           mv /tmp/.buildx-cache-new /tmp/.buildx-cache
       - run: |
           date > timestamp
+          git config --global user.email "info@jonas-strassel.de"
+          git config --global user.name "Jonas Strassel"
           git add timestamp
           git commit -m "chore: update rebuild timestamp"
