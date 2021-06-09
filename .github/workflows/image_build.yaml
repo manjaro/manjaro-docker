@@ -60,3 +60,7 @@ jobs:
         run: |
           rm -rf /tmp/.buildx-cache
           mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+      - run: |
+          date > timestamp
+          git add timestamp
+          git commit -m "chore: update rebuild timestamp"

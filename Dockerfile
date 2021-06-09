@@ -5,7 +5,8 @@ ARG TARGETPLATFORM
 ARG CACHEBUST=1
 ENV LANG=en_US.UTF-8
 
-RUN pacman-key --init && \
+RUN uname -m && \
+    pacman-key --init && \
     pacman-mirrors -f 5
 
 RUN [[ "${TARGETPLATFORM}" == "linux/amd64" ]] || exit 0 && \
