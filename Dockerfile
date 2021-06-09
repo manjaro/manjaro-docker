@@ -1,9 +1,8 @@
-FROM scratch
+FROM manjarosway/base:latest
 
 ARG TARGETPLATFORM
 
 ARG CACHEBUST=1
-ADD ${TARGETPLATFORM}.tar /
 ENV LANG=en_US.UTF-8
 
 RUN pacman-key --init && \
@@ -46,12 +45,11 @@ RUN pacman -S --noconfirm --needed \
         sudo \
         texinfo \
         which && \
-    sed -i -e 's~#IgnorePkg.*~IgnorePkg = glibc~g' '/etc/pacman.conf' && \
     sed -i -e 's~CheckSpace.*~#CheckSpace~g' '/etc/pacman.conf' && \
     pacman -Syyu --noconfirm --needed
 
 # user 'builder' can be used as the running user for applications prohibiting root usage (pacman)
-RUN useradd -d /builder -m builder && \
-    echo "builder ALL=(ALL) NOPASSWD: ALL" >>/etc/sudoers
+RUN id -u builder &>/dev/null || (useradd -d /builder -m builder && \
+    echo "builder ALL=(ALL) NOPASSWD: ALL" >>/etc/sudoers)
 
 CMD ["/usr/bin/bash"]

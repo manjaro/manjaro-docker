@@ -10,7 +10,6 @@ on:
     - cron:  '30 2 * * 0'
 
 env: 
-  PACMAN_VERSION: 5.2.2
   ARCH_INSTALL_SCRIPTS_VERSION: 23
   DOCKER_ORGANIZATION: manjarosway
   PLATFORMS: linux/arm64,linux/amd64
@@ -28,17 +27,6 @@ jobs:
         name: prepare
         run: |
           echo "DATE=$(date +%Y%m%d)" >>$GITHUB_ENV
-      -
-        name: download-amd64-rootfs
-        run: |
-          curl -s https://api.github.com/repos/Manjaro-Sway/manjaro-rootfs-x86_64/releases/latest \
-            | grep browser_download_url \
-            | grep manjaro_rootfs_x86_64.tar \
-            | cut -d '"' -f 4 \
-            | wget -O linux/amd64.tar -qi -
-      - 
-        name: download-arm64-rootfs
-        run: wget -O linux/arm64.tar -q https://osdn.net/projects/manjaro-arm/storage/.rootfs/Manjaro-ARM-aarch64-latest.tar.gz
       -
         name: setup-qemu
         uses: docker/setup-qemu-action@v1
