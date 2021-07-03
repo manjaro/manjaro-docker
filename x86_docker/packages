@@ -1,0 +1,4 @@
+sed
+gzip
+pacman
+systemd

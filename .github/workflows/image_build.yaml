@@ -1,10 +1,12 @@
-# Maintainer: Jonas Strassel <info@jonas-strassel.de>
+# Maintainer: Jonas Strassel <jonas.strassel@manjaro.org>
 # Description: Builds multi-arch docker images to be used in ci-environments
 
 name: image_build
 
 on:
   push:
+    branches:
+      - main
   workflow_dispatch:
   schedule:
     - cron:  '30 2 * * 0'
@@ -19,8 +21,6 @@ jobs:
       - 
         name: checkout
         uses: actions/checkout@v2
-        with:
-          token: "${{ secrets.GITHUB_TOKEN }}"
       -
         name: prepare
         run: |
@@ -30,7 +30,6 @@ jobs:
         uses: docker/setup-qemu-action@v1
       -
         name: setup-buildx
-        id: buildx
         uses: docker/setup-buildx-action@v1
       -
         name: login-docker
@@ -47,7 +46,7 @@ jobs:
             CACHEBUST=${{ env.DATE }}
           platforms: ${{ env.PLATFORMS }}
           push: true
-          tags: manjarosway/base:${{ env.DATE }},manjarosway/base:latest
+          tags: manjarolinux/base:${{ env.DATE }},manjarolinux/base:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
       -
@@ -58,9 +57,11 @@ jobs:
         run: |
           rm -rf /tmp/.buildx-cache
           mv /tmp/.buildx-cache-new /tmp/.buildx-cache
-      - run: |
+      - 
+        run: |
           date > timestamp
-          git config --global user.email "info@jonas-strassel.de"
+          git config --global user.email "jonas.strassel@manjaro.org"
           git config --global user.name "Jonas Strassel"
           git add timestamp
           git commit -m "chore: update rebuild timestamp"
+          git push
