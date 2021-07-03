@@ -1,5 +1,6 @@
 FROM manjarolinux/base:latest as base
 
+# squashing the whole base image into one layer
 FROM scratch AS release
 COPY --from=base / /
 
@@ -49,6 +50,7 @@ RUN pacman -S --noconfirm --needed \
         sudo \
         texinfo \
         which && \
+    # docker context give real space limits
     sed -i -e 's~CheckSpace.*~#CheckSpace~g' '/etc/pacman.conf' && \
     pacman -Syyu --noconfirm --needed
 
