@@ -51,10 +51,14 @@ RUN pacman -S --noconfirm --needed \
         sed  \
         sudo \
         texinfo \
+        lsb-release \
+        manjaro-release \
         which && \
     # docker context give real space limits
     sed -i -e 's~CheckSpace.*~#CheckSpace~g' '/etc/pacman.conf' && \
     pacman -Syyu --noconfirm --needed
+
+RUN ls /etc/*-release && cat /etc/*-release
 
 # user 'builder' can be used as the running user for applications prohibiting root usage (pacman)
 RUN id -u builder &>/dev/null || (useradd -d /builder -m builder && \
