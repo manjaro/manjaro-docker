@@ -9,6 +9,8 @@ ARG TARGETPLATFORM
 ARG CACHEBUST=1
 ENV LANG=en_US.UTF-8
 
+ENV PATH="/usr/bin:${PATH}"
+
 RUN uname -m && \
     pacman-key --init && \
     pacman-mirrors -f 5
