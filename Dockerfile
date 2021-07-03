@@ -1,4 +1,7 @@
-FROM manjarolinux/base:latest
+FROM manjarolinux/base:latest as base
+
+FROM scratch AS release
+COPY --from=base / /
 
 ARG TARGETPLATFORM
 
@@ -17,7 +20,7 @@ RUN [[ "${TARGETPLATFORM}" == "linux/arm64" ]] || exit 0 && \
     pacman -Syy --noconfirm --needed archlinuxarm-keyring manjaro-arm-keyring && \
     pacman-key --populate archlinuxarm manjaro-arm
 
-RUN pacman -R --noconfirm --needed \
+RUN pacman -S --noconfirm --needed \
         shadow \
         git \
         cmake \
