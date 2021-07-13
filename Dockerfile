@@ -26,6 +26,7 @@ RUN [[ "${TARGETPLATFORM}" == "linux/arm64" ]] || exit 0 && \
 RUN pacman -S --noconfirm --needed \
         shadow \
         git \
+        git-lfs \
         cmake \
         libseccomp \
         autoconf \ 
