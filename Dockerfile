@@ -57,6 +57,7 @@ RUN pacman -S --noconfirm --needed \
         which && \
     # docker context give real space limits
     sed -i -e 's~CheckSpace.*~#CheckSpace~g' '/etc/pacman.conf' && \
+    sed -i -e 's~HoldPkg.*~#HoldPkg~g' '/etc/pacman.conf' && \
     pacman -Syyu --noconfirm --needed
 
 RUN ls /etc/*-release && cat /etc/*-release
