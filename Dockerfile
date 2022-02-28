@@ -25,6 +25,8 @@ RUN [[ "${TARGETPLATFORM}" == "linux/arm64" ]] || exit 0 && \
     pacman -Syy --noconfirm --needed archlinuxarm-keyring manjaro-arm-keyring && \
     pacman-key --populate archlinuxarm manjaro-arm
 
+RUN pacman -S --noconfirm --needed --overwrite glibc pacman
+
 RUN pacman -S --noconfirm --needed \
     shadow \
     git \
@@ -56,9 +58,7 @@ RUN pacman -S --noconfirm --needed \
     texinfo \
     lsb-release \
     manjaro-release \
-    which && \
-    # docker context give real space limits
-    pacman -Syyu --noconfirm --needed
+    which
 
 RUN ls /etc/*-release && cat /etc/*-release
 
