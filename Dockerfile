@@ -1,8 +1,10 @@
-FROM manjarolinux/base:latest as base
+FROM manjarolinux/base:20220220 as base
 
 # squashing the whole base image into one layer
 FROM scratch AS release
 COPY --from=base / /
+
+COPY pacman.conf /etc/pacman.conf
 
 ARG TARGETPLATFORM
 
@@ -13,51 +15,49 @@ ENV PATH="/usr/bin:${PATH}"
 
 RUN uname -m && \
     pacman-key --init && \
-    pacman-mirrors -f 5
+    pacman-mirrors --geoip
 
 RUN [[ "${TARGETPLATFORM}" == "linux/amd64" ]] || exit 0 && \
     pacman -Syy --noconfirm --needed archlinux-keyring manjaro-keyring && \
-	pacman-key --populate archlinux manjaro
+    pacman-key --populate archlinux manjaro
 
 RUN [[ "${TARGETPLATFORM}" == "linux/arm64" ]] || exit 0 && \
     pacman -Syy --noconfirm --needed archlinuxarm-keyring manjaro-arm-keyring && \
     pacman-key --populate archlinuxarm manjaro-arm
 
 RUN pacman -S --noconfirm --needed \
-        shadow \
-        git \
-        git-lfs \
-        cmake \
-        libseccomp \
-        autoconf \ 
-        automake \
-        binutils \
-        bison  \
-        fakeroot \
-        file \
-        findutils \
-        flex \
-        gawk \
-        gcc \
-        gettext \
-        grep \
-        groff \
-        gzip \
-        libtool \
-        m4 \
-        make \
-        pacman \
-        patch \
-        pkgconf \
-        sed  \
-        sudo \
-        texinfo \
-        lsb-release \
-        manjaro-release \
-        which && \
+    shadow \
+    git \
+    git-lfs \
+    cmake \
+    libseccomp \
+    autoconf \ 
+    automake \
+    binutils \
+    bison  \
+    fakeroot \
+    file \
+    findutils \
+    flex \
+    gawk \
+    gcc \
+    gettext \
+    grep \
+    groff \
+    gzip \
+    libtool \
+    m4 \
+    make \
+    pacman \
+    patch \
+    pkgconf \
+    sed  \
+    sudo \
+    texinfo \
+    lsb-release \
+    manjaro-release \
+    which && \
     # docker context give real space limits
-    sed -i -e 's~CheckSpace.*~#CheckSpace~g' '/etc/pacman.conf' && \
-    sed -i -e 's~HoldPkg.*~#HoldPkg~g' '/etc/pacman.conf' && \
     pacman -Syyu --noconfirm --needed
 
 RUN ls /etc/*-release && cat /etc/*-release
