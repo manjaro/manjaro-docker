@@ -60,7 +60,7 @@ RUN pacman -S --noconfirm --needed \
     manjaro-release \
     which
 
-# Enable atleast one locale in locale.gen
+# Enable at least one locale in locale.gen
 RUN sed -i 's/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g' /etc/locale.gen && \
     locale-gen
 
