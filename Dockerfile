@@ -25,9 +25,15 @@ RUN [[ "${TARGETPLATFORM}" == "linux/arm64" ]] || exit 0 && \
     pacman -Syy --noconfirm --needed archlinuxarm-keyring manjaro-arm-keyring && \
     pacman-key --populate archlinuxarm manjaro-arm
 
-RUN pacman -S --noconfirm --needed --overwrite glibc pacman
+RUN rm /usr/include/bits/struct_stat.h \
+        /usr/include/bits/types/struct___jmp_buf_tag.h \
+        /usr/include/bits/types/struct_timeb.h \
+        /usr/share/locale/sr/LC_MESSAGES/libc.mo && \
+    pacman -Q --info glibc && \
+    pacman -Syy glibc --noconfirm && \
+    pacman -Q --info glibc
 
-RUN pacman -S --noconfirm --needed \
+RUN pacman -Syy --noconfirm --needed \
     shadow \
     git \
     git-lfs \
