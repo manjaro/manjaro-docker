@@ -60,6 +60,8 @@ RUN pacman -S --noconfirm --needed \
     manjaro-release \
     which
 
+RUN locale-gen
+
 RUN ls /etc/*-release && cat /etc/*-release
 
 # user 'builder' can be used as the running user for applications prohibiting root usage (pacman)
