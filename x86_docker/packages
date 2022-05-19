@@ -1,4 +1,6 @@
-sed
+awk
+coreutils
 gzip
 pacman
+sed
 systemd
