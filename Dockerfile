@@ -1,4 +1,4 @@
-FROM manjarolinux/base:20220220 as base
+FROM manjarolinux/base:20220713 as base
 
 # squashing the whole base image into one layer
 FROM scratch AS release
