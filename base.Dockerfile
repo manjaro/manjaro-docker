@@ -26,7 +26,7 @@ RUN [[ "${TARGETPLATFORM}" == "linux/arm64" ]] || exit 0 && \
     pacman-key --populate archlinuxarm manjaro-arm
 
 # set everything to be a dependency
-RUN pacman -D --asdeps $(pacman -Qeq)
+RUN pacman -Qeq |  grep -q ^ && pacman -D --asdeps $(pacman -Qeq) || echo "nothing to set as dependency"
 
 # mark all base pkgs as explicitly installed
 RUN pacman -S --asexplicit --needed --noconfirm base
