@@ -41,7 +41,7 @@ RUN pacman -S --asexplicit --needed --noconfirm \
 RUN pacman -Qtdq | grep -v base && pacman -Rsunc --noconfirm  $(pacman -Qtdq | grep -v base) systemd || echo "nothing to remove"
 
 # upgrade glibc
-RUN rm /usr/include/bits/struct_stat.h \
+RUN rm -f /usr/include/bits/struct_stat.h \
        /usr/include/bits/types/struct___jmp_buf_tag.h \
        /usr/include/bits/types/struct_timeb.h \
        /usr/share/locale/sr/LC_MESSAGES/libc.mo && \
@@ -51,7 +51,7 @@ RUN rm /usr/include/bits/struct_stat.h \
     pacman -Syu --noconfirm
 
 # clean pacman cache
-RUN pacman -Scc --noconfirm
+RUN rm -f /var/cache/pacman/pkg/*
 
 # enable at least one locale in locale.gen
 RUN sed -i 's/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g' /etc/locale.gen && \
