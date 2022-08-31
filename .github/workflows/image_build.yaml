@@ -45,8 +45,22 @@ jobs:
           build-args: |
             CACHEBUST=${{ env.DATE }}
           platforms: ${{ env.PLATFORMS }}
+          file: base.Dockerfile
           push: true
           tags: manjarolinux/base:${{ env.DATE }},manjarolinux/base:latest
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new
+      -
+        name: build-docker-build
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          build-args: |
+            CACHEBUST=${{ env.DATE }}
+          platforms: ${{ env.PLATFORMS }}
+          file: build.Dockerfile
+          push: true
+          tags: manjarolinux/build:${{ env.DATE }},manjarolinux/build:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
       - 
@@ -60,11 +74,17 @@ jobs:
         run: |
           docker run --rm -t --platform=amd64 manjarolinux/base:latest uname -a
           docker run --rm -t --platform=amd64 manjarolinux/base:latest pacman --noconfirm -S base-devel
+
+          docker run --rm -t --platform=amd64 manjarolinux/build:latest uname -a
+          docker run --rm -t --platform=amd64 manjarolinux/build:latest pacman --noconfirm -S python-pip
       -
-        name: test-amd64
+        name: test-arm64
         run: |
           docker run --rm -t --platform=arm64 manjarolinux/base:latest uname -a
-          docker run --rm -t --platform=amd64 manjarolinux/base:latest pacman --noconfirm -S base-devel
+          docker run --rm -t --platform=arm64 manjarolinux/base:latest pacman --noconfirm -S base-devel
+
+          docker run --rm -t --platform=arm64 manjarolinux/build:latest uname -a
+          docker run --rm -t --platform=arm64 manjarolinux/build:latest pacman --noconfirm -S python-pip
       -
         # Temp fix
         # https://github.com/docker/build-push-action/issues/252
