@@ -8,7 +8,9 @@ RUN pacman -Syy --noconfirm --needed \
     cmake \
     libseccomp \
     libtool && \
+    pacman -S --noconfirm glibc && \
     rm -f /var/cache/pacman/pkg/*
+    
 
 # user 'builder' can be used as the running user for applications prohibiting root usage (pacman)
 RUN id -u builder &>/dev/null || (useradd -d /builder -m builder && \
