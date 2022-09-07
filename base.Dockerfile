@@ -46,7 +46,7 @@ RUN rm -f /usr/include/bits/struct_stat.h \
        /usr/include/bits/types/struct_timeb.h \
        /usr/share/locale/sr/LC_MESSAGES/libc.mo && \
     pacman -Q --info glibc && \
-    pacman -Syy glibc --needed --noconfirm && \
+    pacman -Syy glibc --noconfirm && \
     pacman -Q --info glibc && \
     pacman -Syu --noconfirm
 

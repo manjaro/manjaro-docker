@@ -8,7 +8,6 @@ RUN pacman -Syy --noconfirm --needed \
     cmake \
     libseccomp \
     libtool && \
-    pacman -S --noconfirm glibc && \
     rm -f /var/cache/pacman/pkg/*
     
 
