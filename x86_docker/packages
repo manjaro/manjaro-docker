@@ -1,6 +1,8 @@
+archlinux-keyring
 awk
 coreutils
 gzip
+manjaro-keyring
 pacman
 sed
 systemd
