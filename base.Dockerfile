@@ -31,6 +31,7 @@ RUN pacman -Qeq |  grep -q ^ && pacman -D --asdeps $(pacman -Qeq) || echo "nothi
 # mark all base pkgs as explicitly installed
 RUN pacman -S --asexplicit --needed --noconfirm base
 
+
 # mark essentials as explicitly installed
 RUN pacman -S --asexplicit --needed --noconfirm \
     lsb-release \
@@ -50,8 +51,8 @@ RUN rm -f /usr/include/bits/struct_stat.h \
     pacman -Q --info glibc && \
     pacman -Syu --noconfirm
 
-# clean pacman cache
-RUN rm -f /var/cache/pacman/pkg/*
+# install some base pkgs for local-gen
+RUN pacman -Syy --noconfirm sed gzip
 
 # enable at least one locale in locale.gen
 RUN sed -i 's/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g' /etc/locale.gen && \
@@ -59,6 +60,9 @@ RUN sed -i 's/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g' /etc/locale.gen && \
 
 # debug output release info
 RUN ls /etc/*-release && cat /etc/*-release
+
+# clean pacman cache
+RUN rm -f /var/cache/pacman/pkg/*
 
 ## final docker image 
 FROM scratch AS release
