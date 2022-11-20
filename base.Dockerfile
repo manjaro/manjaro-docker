@@ -18,11 +18,11 @@ RUN uname -m && \
     pacman-mirrors --geoip
 
 RUN [[ "${TARGETPLATFORM}" == "linux/amd64" ]] || exit 0 && \
-    pacman -Syy --noconfirm --needed archlinux-keyring manjaro-keyring && \
+    pacman -Syyu --noconfirm --needed archlinux-keyring manjaro-keyring && \
     pacman-key --populate archlinux manjaro
 
 RUN [[ "${TARGETPLATFORM}" == "linux/arm64" ]] || exit 0 && \
-    pacman -Syy --noconfirm --needed archlinuxarm-keyring manjaro-arm-keyring && \
+    pacman -Syyu --noconfirm --needed archlinuxarm-keyring manjaro-arm-keyring && \
     pacman-key --populate archlinuxarm manjaro-arm
 
 # set everything to be a dependency
