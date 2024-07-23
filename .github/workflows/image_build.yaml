@@ -54,8 +54,6 @@ jobs:
           file: build.Dockerfile
           push: true
           tags: manjarolinux/build:${{ env.DATE }},manjarolinux/build:latest
-          cache-from: type=gha, scope=${{ github.workflow }}
-          cache-to: type=gha, scope=${{ github.workflow }}
       - name: qemu-setup
         run: |
           sudo apt-get update
