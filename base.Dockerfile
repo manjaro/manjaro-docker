@@ -14,7 +14,7 @@ ENV LANG=en_US.UTF-8
 ENV PATH="/usr/bin:${PATH}"
 
 RUN uname -m && \
-    pacman-key --init && \
+    pacman-key --init && pacman-key --refresh-keys && \
     pacman-mirrors --geoip
 
 RUN [[ "${TARGETPLATFORM}" == "linux/amd64" ]] || exit 0 && \
