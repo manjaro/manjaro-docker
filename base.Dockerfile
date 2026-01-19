@@ -15,7 +15,7 @@ ENV PATH="/usr/bin:${PATH}"
 
 RUN uname -m && \
     pacman-key --init && \
-    pacman-mirrors --geoip
+    pacman-mirrors --fasttrack 5
 
 RUN [[ "${TARGETPLATFORM}" == "linux/amd64" ]] || exit 0 && \
     pacman -Syyu --noconfirm --needed archlinux-keyring manjaro-keyring && \
